@@ -28,44 +28,22 @@ export const getStudentById = async (req, res) => {
 // Add new student
 export const addStudent = async (req, res) => {
   const {
-    firstName,
-    middleName,
-    lastName,
-    email,
-    contact,
-    photo,
-    birthDate,
-    admissionYear,
-    passingYear,
-    cgpa,
-    roles
+    name, seatNumber
   } = req.body;
 
   const externalId = generateId();
 
   try {
     // Check if student with same email or externalId already exists
-    const existing = await Student.findOne({
-      $or: [{ email }, { externalId }],
-    });
+    const existing = await Student.findOne({seatNumber});
 
     if (existing) {
       return res.status(400).json({ message: 'Student already exists' });
     }
 
     const newStudent = new Student({
-      firstName,
-      middleName,
-      lastName,
-      email,
-      contact,
-      photo,
-      birthDate,
-      externalId,
-      admissionYear,
-      passingYear,
-      cgpa,
-      roles,
+      seatNumber,
+      name
     });
 
     const savedStudent = await newStudent.save();
